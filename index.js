@@ -3,49 +3,24 @@ let utils = require("./utils"), plot = require("./plot")
 
 
 
-// waves: [{freq, offset, amplitude}]
-function genSample(t, waves){
-	let amplitudeSum = 0
-	let s = waves.reduce(function(s, w){
-		let amplitude = w.amplitude || 1
-		amplitudeSum += amplitude
-		return s + Math.cos(Math.PI*2*(t*w.freq+w.offset))*amplitude
-	}, 0)
-	return s / amplitudeSum
-}
-function genData(duration, freq, waves){
-	let r = []
-	for( let t=0; t<duration; t+=utils.map( Math.random(), [0,1], [1/freq[0], 1/freq[1]]) ){
-		r.push( [ t, genSample(t, waves) ] )
-	}
-	return r
-}
-
-
-let duration = 20; //s
-let samplingRate = [5,200]; //Hz
-
-let data = genData(duration, samplingRate, [
-	{ freq:1/40, offset:0  , amplitude:1  },
-	{ freq:1/20, offset:0  , amplitude:1  },
-	{ freq:1   , offset:0.1, amplitude:.5 },
-])
-
 let windowFn = require("./windowFn")
 
 function dftDoWindow(data, fn){
 	return data.map(function(d){
-		let normT = d[0]/duration
+		let normT = d[0] / duration
 		return [ d[0], d[1]*fn(normT) ]
 	})
 }
 
+
+let waves = require("./waves")
+let duration = waves[waves.length-1][0]
+
 let dataWindowed = _.mapValues(windowFn, function(v,k){
-	return dftDoWindow(data, v)
+	return dftDoWindow(waves, v)
 })
 
-
-
+// console.log(dataWindowed)
 
 plot.plotWindows( _.map(dataWindowed, function(v,k){
 	return {title:k, data:v}
@@ -60,6 +35,7 @@ function cSample(t, f){
 
 
 function correlate(data, f){
+	// console.log("correlate", f, data)
 	return data.reduce(function(s,d){
 		let cSamples = cSample(d[0], f)
 		s[0] += cSamples[0]*d[1]/data.length
@@ -68,31 +44,34 @@ function correlate(data, f){
 	}, [0,0])
 }
 
-let minF = 0.5;//1 / duration
-let maxF = 2;//samplingRate / 2
-let stepF = 0.01
+
+let dftMinF = 0.5 //1 / duration
+let dftMaxF = 2 //samplingRate / 2
+let dftStepF = 0.01
 
 function dft(d){
 	let r = []
-	for(let f=minF; f<maxF; f+=stepF){
+	for(let f=dftMinF; f<dftMaxF; f+=dftStepF){
 		let corr = correlate(d, f)
 		//let v = Math.sqrt(Math.pow(corr[0], 2) + Math.pow(corr[1], 2)) / d.length
 		r.push([f, corr])
 	}
 	return r
 }
-
-
-
 let resultWindowed = _.mapValues(dataWindowed, function(v,k){
+	// console.log(k)
 	return dft(v, k)
 })
+
+
+
 
 function calcMean (d){ return Math.hypot(d[0], d[1]); }
 function calcPhase(d){ return Math.atan2(d[1], d[0])/(Math.PI*2); }
 
 function refineData(data, fn){
 	return data.map(function(d){
+		// console.log("refine", "t:", "d:", d[1], "->", fn(d[1]))
 		return [d[0], fn(d[1])]
 	})
 }
@@ -103,7 +82,7 @@ let resultWindowedMean = _.mapValues(resultWindowed, function(v,k){
 let resultWindowedPhase = _.mapValues(resultWindowed, function(v,k){
 	return refineData(v, calcPhase)
 })
-//console.log("resultWindowedMean",resultWindowedMean)
+// console.log("resultWindowedMean",JSON.stringify(resultWindowedMean) )
 
 
 

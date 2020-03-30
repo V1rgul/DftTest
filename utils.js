@@ -1,20 +1,28 @@
 
-function mapFrom(v, rangeIn) {
-	return (v - rangeIn[0]) / (rangeIn[1] - rangeIn[0])
+function mapFrom(min, max, t){
+	if( max == min ){
+		if(t == min) return 0
+		if(t >  min) return +Infinity
+		else         return -Infinity
+	}
+	return ( t - min ) / ( max - min )
+}
+function mapTo(min, max, t){
+	return t * ( max - min ) + min
 }
 
-function mapTo(v, rangeOut) {
-	return v * (rangeOut[1] - rangeOut[0]) + rangeOut[0];
+function logB(base, v){
+	return Math.log(v) / Math.log(base)
 }
 
-function map(v, rangeIn, rangeOut) {
-	return mapTo(mapFrom(v, rangeIn), rangeOut)
+function gamma(base, t){
+	return Math.pow(base, t)
 }
-
 
 
 module.exports = {
 	mapFrom,
 	mapTo,
-	map
+	logB,
+	gamma
 }
