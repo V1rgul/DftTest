@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "gnu-plot": "^0.1.8",
     "lodash": "^4.16.2",
     "taylorwin": "^1.0.1"
   }
