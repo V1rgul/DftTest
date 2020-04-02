@@ -45,11 +45,11 @@ function tukeyWindowFn(alpha){ return function(t){
 
 
 let windows = {
-	Door           : function(t){ return 1 },
+	// Door           : function(t){ return 1 },
 	// Triangular     : function(t){ return 2  *( (t<.5) ? t*2 : (1-t)*2  ) },
 	// Welch          : function(t){ return 1.5*( 1 - Math.pow( 2*t-1 , 2 ) ) },
-	Hann           : cosineWindowFn([0.5, 0.5]),
-	Hamming        : cosineWindowFn([25/46, 21/46]),
+	// Hann           : cosineWindowFn([0.5, 0.5]),
+	// Hamming        : cosineWindowFn([25/46, 21/46]),
 	// Blackman       : cosineWindowFn([7938/18608, 9240/18608, 1430/18608]),
 	// Nuttal         : cosineWindowFn([0.355768, 0.487396, 0.144232, 0.012604]),
 	// BlackmanNuttal : cosineWindowFn([0.3635819, 0.4891775, 0.1365995, 0.0106411]),

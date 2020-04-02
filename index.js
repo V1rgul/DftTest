@@ -22,9 +22,9 @@ let dataWindowed = _.mapValues(windowFn, function(v,k){
 
 // console.log(dataWindowed)
 
-plot.plotWindows( _.map(dataWindowed, function(v,k){
-	return {title:k, data:v}
-}) )
+// plot.plotWindows( _.map(dataWindowed, function(v,k){
+// 	return {title:k, data:v}
+// }) )
 
 
 
@@ -36,24 +36,28 @@ function cSample(t, f){
 
 function correlate(data, f){
 	// console.log("correlate", f, data)
-	return data.reduce(function(s,d){
-		let cSamples = cSample(d[0], f)
-		s[0] += cSamples[0]*d[1]/data.length
-		s[1] += cSamples[1]*d[1]/data.length
-		return s
-	}, [0,0])
+	return data.reduce(
+		function(s,d){
+			let cSamples = cSample(d[0], f)
+			s[0] += cSamples[0]*d[1]
+			s[1] += cSamples[1]*d[1]
+			return s
+		},
+		[0,0]
+	).map( d =>
+		2 * d / data.length
+	)
 }
 
 
-let dftMinF = 0.5 //1 / duration
-let dftMaxF = 2 //samplingRate / 2
-let dftStepF = 0.01
+let dftMinF =  1 //1 / duration
+let dftMaxF = 15 //samplingRate / 2
+let dftStepF = 1.001
 
 function dft(d){
 	let r = []
-	for(let f=dftMinF; f<dftMaxF; f+=dftStepF){
+	for(let f=dftMinF; f<dftMaxF; f*=dftStepF){
 		let corr = correlate(d, f)
-		//let v = Math.sqrt(Math.pow(corr[0], 2) + Math.pow(corr[1], 2)) / d.length
 		r.push([f, corr])
 	}
 	return r
@@ -66,8 +70,8 @@ let resultWindowed = _.mapValues(dataWindowed, function(v,k){
 
 
 
-function calcMean (d){ return Math.hypot(d[0], d[1]); }
-function calcPhase(d){ return Math.atan2(d[1], d[0])/(Math.PI*2); }
+function calcMean (d){ return utils.dB.fromRatio( Math.hypot(d[0], d[1]) ) }
+function calcPhase(d){ return Math.atan2(d[1], d[0]) / (Math.PI*2); }
 
 function refineData(data, fn){
 	return data.map(function(d){
@@ -87,7 +91,7 @@ let resultWindowedPhase = _.mapValues(resultWindowed, function(v,k){
 
 
 function findMax(data){
-	let m = [0,0]
+	let m = [0,-Infinity]
 	let id = 0
 	data.forEach(function(d, i){
 		if(d[1] > m[1]){
@@ -117,17 +121,17 @@ plot.plotFreq(
 )
 
 
-plot.plotPhase(
-	_.map(resultWindowedPhase, function(v,k){
-		return { title:k, data:v, /*style:"histeps linewidth 1.5"*/ }
-	}),
-	_.map(maximumsValues,function(v,k){
-		return {
-			data:[ v[1] ],
-			style:"points"
-		}
-	})
-)
+// plot.plotPhase(
+// 	_.map(resultWindowedPhase, function(v,k){
+// 		return { title:k, data:v, /*style:"histeps linewidth 1.5"*/ }
+// 	}),
+// 	_.map(maximumsValues,function(v,k){
+// 		return {
+// 			data:[ v[1] ],
+// 			style:"points"
+// 		}
+// 	})
+// )
 
 
 

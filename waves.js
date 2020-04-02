@@ -1,7 +1,7 @@
 let utils = require("./utils")
 
 
-let duration = 20; //s
+let duration = 100; //s
 let samplingRate = [50,200]; //Hz
 
 
@@ -11,13 +11,10 @@ let samplingRate = [50,200]; //Hz
 
 
 function genSample(t, waves){
-	let amplitudeSum = 0
 	let s = waves.reduce(function(s, w){
-		let amplitude = w.amplitude || 1
-		amplitudeSum += amplitude
-		return s + amplitude * w.fn(t)
+		return s + w(t)
 	}, 0)
-	return s / amplitudeSum
+	return s
 }
 function genData(duration, freq, waves){
 	let r = []
@@ -40,10 +37,9 @@ function genCosine(freq, phase){
 }
 
 let data = genData(duration, samplingRate, [
-	// { fn: (t) => (1), amplitude: 1},
-	{ fn: genCosine(1/40, 0  ), amplitude:1 },
-	{ fn: genCosine(1/20, 0  ), amplitude:1 },
-	{ fn: genCosine(1   , 0.1), amplitude:0.5 },
+	// (t) => (1),
+	(t) => utils.dB.toRatio(  0) * genCosine(  2, 0)(t),
+	(t) => utils.dB.toRatio( -2) * genCosine( 10, 0)(t),
 ])
 
 

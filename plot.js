@@ -28,10 +28,14 @@ function plotWindows(o){
 
 function plotFreq(curves, maximums){
 	let plotF = gnuplot()
-	//plotF.set(colors)
+	plotF.set(colors)
 	//plotF.set({yrange:"[0:]"})
-	//plotF.set({logscale:"x 2"})
-	plotF.set({logscale:"y 10"})
+	plotF.set({logscale:"x 10"})
+	// plotF.set({logscale:"y 10"})
+	plotF.set({
+		xlabel: "\"Hz\"",
+		ylabel: "\"dB\"",
+	})
 
 	plotF.plot( curves.concat(maximums) )
 }
@@ -44,7 +48,11 @@ function plotFreq(curves, maximums){
 
 function plotPhase(curves, maximums){
 	let plotP = gnuplot()
-	//plotF.set(colors)
+	//plotP.set(colors)
+	plotP.set({
+		xlabel: "\"Hz\"",
+		ylabel: "\"Phase %\"",
+	})
 	plotP.plot( curves.concat(maximums) )
 }
 
