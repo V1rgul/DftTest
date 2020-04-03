@@ -11,7 +11,7 @@ function mapTo(min, max, t){
 	return t * ( max - min ) + min
 }
 
-function logB(base, v){
+function logBase(base, v){
 	return Math.log(v) / Math.log(base)
 }
 
@@ -26,22 +26,36 @@ function ratioToDB(r){
 	return 10 * Math.log10(r)
 }
 
+function memoize(fn){
+	let mem
+	return function(){
+		if(mem === undefined) mem = fn()
+		return mem
+	}
+}
+
+function assignDefaults(object, defaults){
+	Object.keys(defaults).forEach(function(k){
+		if(object[k] === undefined) object[k] = defaults[k]
+	})
+}
+function assignDefaultsGen(object, defaults){
+	Object.keys(defaults).forEach(function(k){
+		if(object[k] === undefined) object[k] = defaults[k]()
+	})
+}
+
 
 module.exports = {
 	mapFrom,
 	mapTo,
-	logB,
+	logBase,
 	gamma,
 	dB: {
 		fromRatio: ratioToDB,
 		toRatio: dBtoRatio
-	}
+	},
+	memoize,
+	assignDefaults,
+	assignDefaultsGen,
 }
-
-// console.log(" 10db = ", dBtoRatio( 10))
-// console.log("  0db = ", dBtoRatio(  0))
-// console.log("-10db = ", dBtoRatio(-10))
-
-// console.log(" 10   = ", ratioToDB(10  ), "dB")
-// console.log("  1   = ", ratioToDB( 1  ), "dB")
-// console.log("  0.1 = ", ratioToDB( 0.1), "dB")

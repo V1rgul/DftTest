@@ -1,6 +1,19 @@
 
+function genTriangular(){ return function(t){
+	return 2 * ( (t<.5) ? t*2 : (1-t)*2  )
+} }
 
+function genWelch(){ return function(t){
+	return 1.5 * ( 1 - Math.pow( 2*t-1 , 2 ) )
+} }
 
+// See https://en.wikipedia.org/wiki/Window_function#Cosine-sum_windows
+function genCosine(p){ return function(t){
+	return p.reduce(function(acc, alpha, i){
+		var dir = (i%2) ? -1 : 1
+		return acc += dir*alpha*Math.cos(t*2*Math.PI*i)
+	}, 0) / p[0]
+} }
 
 function genTaylor(options){
 	options = options || {}
@@ -24,16 +37,6 @@ function genTaylor(options){
 
 	return function(t){
 		return interpolate(taylorWindowArr, t)
-	}
-}
-
-// See https://en.wikipedia.org/wiki/Window_function#Cosine-sum_windows
-function cosineWindowFn(p){
-	return function(t){
-		return p.reduce(function(acc, alpha, i){
-			var dir = (i%2) ? -1 : 1
-			return acc += dir*alpha*Math.cos(t*2*Math.PI*i)
-		}, 0) / p[0]
 	}
 }
 
@@ -61,34 +64,19 @@ function genTukey(options){
 
 
 let windows = {
-	// Door           : function(t){ return 1 },
-	// Triangular     : function(t){ return 2  *( (t<.5) ? t*2 : (1-t)*2  ) },
-	// Welch          : function(t){ return 1.5*( 1 - Math.pow( 2*t-1 , 2 ) ) },
-	// Hann           : cosineWindowFn([0.5, 0.5]),
-	// Hamming        : cosineWindowFn([25/46, 21/46]),
-	// Blackman       : cosineWindowFn([7938/18608, 9240/18608, 1430/18608]),
-	// Nuttal         : cosineWindowFn([0.355768, 0.487396, 0.144232, 0.012604]),
-	// BlackmanNuttal : cosineWindowFn([0.3635819, 0.4891775, 0.1365995, 0.0106411]),
-	// BlackmanHarris : cosineWindowFn([0.35875, 0.48829, 0.14128, 0.01168]),
-	// FlatTop        : cosineWindowFn([0.21557895, 0.41663158, 0.277263158, 0.083578947, 0.006947368]),
-	// Taylor         : genTaylor(),
-	Tukey          : genTukey(),
+	Box            : () => function(t){ return 1 },
+	Triangular     : genTriangular,
+	Welch          : genWelch,
+	Hann           : () => genCosine([0.5, 0.5]),
+	Hamming        : () => genCosine([25/46, 21/46]),
+	Blackman       : () => genCosine([7938/18608, 9240/18608, 1430/18608]),
+	Nuttal         : () => genCosine([0.355768, 0.487396, 0.144232, 0.012604]),
+	BlackmanNuttal : () => genCosine([0.3635819, 0.4891775, 0.1365995, 0.0106411]),
+	BlackmanHarris : () => genCosine([0.35875, 0.48829, 0.14128, 0.01168]),
+	FlatTop        : () => genCosine([0.21557895, 0.41663158, 0.277263158, 0.083578947, 0.006947368]),
+	Taylor         : genTaylor,
+	Tukey          : genTukey,
 }
 
 
 module.exports = windows
-
-
-// let points = Math.pow(2, 16)
-// console.log("points:", points)
-// let integrals = {}
-// Object.keys(windows).forEach(function(k){
-// 	let sum = 0
-// 	for(let i=0; i<points; i++){
-// 		let t = i/points
-// 		sum += windows[k](t)
-// 	}
-
-// 	integrals[k] = sum / points
-// })
-// console.log(integrals)
