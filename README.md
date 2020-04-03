@@ -4,17 +4,19 @@ Discrete Fourrier Transform made easy
 
 ## example
 ```js
+let utils = require("./utils")
 let data = [
 	[0.00,  1],
 	[0.25,  0],
 	[0.50, -1],
 	[0.75,  0],
 ]
-
 let dftResult = require("dft-easy")(data)
 
 require("gnu-plot").plot([{
-	data: dftResult,
+	data: dftResult.map((d) =>
+		[d[0], utils.dB.fromRatio(d[1])]
+	),
 	xlabel: "\"Hz\"",
 	ylabel: "\"dB\"",
 	logscale:"x 10",
