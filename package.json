@@ -1,16 +1,19 @@
 {
-  "name": "dft",
+  "name": "dft-easy",
   "version": "1.0.0",
-  "description": "",
+  "description": "Discrete Fourrier Transform made easy",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node demo.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "V1rgul",
+  "homepage": "https://github.com/V1rgul/DftTest",
+  "bugs": "https://github.com/V1rgul/DftTest/issues",
+  "license": "CC-BY-4.0",
   "dependencies": {
-    "gnu-plot": "^0.1.8",
-    "lodash": "^4.16.2",
     "taylorwin": "^1.0.1"
+  },
+  "devDependencies": {
+    "gnu-plot": "^0.1.8"
   }
 }
