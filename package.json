@@ -1,6 +1,6 @@
 {
   "name": "dft-easy",
-  "version": "1.0.0",
+  "version": "1.0.01",
   "description": "Discrete Fourrier Transform made easy",
   "main": "index.js",
   "scripts": {
