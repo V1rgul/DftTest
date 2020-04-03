@@ -14,7 +14,7 @@ let data = [
 let dftResult = require("dft-easy")(data)
 
 require("gnu-plot").plot([{
-	data: result,
+	data: dftResult,
 	xlabel: "\"Hz\"",
 	ylabel: "\"dB\"",
 	logscale:"x 10",
