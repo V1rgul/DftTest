@@ -36,7 +36,7 @@ function constructOptions(options, data, useConstructed){
 
 	let dataStats = utils.memoize(() => calcDataStats(data))
 
-	utils.assignDefaultsGen(options, {
+	utils.assign.defaultsGen(options, {
 		window        : () => windows.Taylor(),
 		start         : () => dataStats().time.min,
 		end           : () => dataStats().time.max,
@@ -45,7 +45,7 @@ function constructOptions(options, data, useConstructed){
 	})
 
 	if(typeof options.frequencies.list !== Array){
-		utils.assignDefaultsGen(options.frequencies, {
+		utils.assign.defaultsGen(options.frequencies, {
 			min    : () => 1/dataStats().duration,
 			max    : () => (1/dataStats().timeDelta.min) / 2,
 			number : () => 4096,
@@ -78,20 +78,21 @@ function main(data, options){
 }
 
 
-// function peaks(dftResult, peakOptions){
-// 	utils.assignDefaults(peakOptions, {
-// 		number: 1,
-// 		excursion: 10,
-// 	})
+function peak(dftResult){
+	let elemMax = [null, -Infinity]
+	dftResult.forEach(function(d){
+		if(d[1] > elemMax[1]){
+			elemMax = d
+		}
+	})
+	return elemMax
+}
 
-// }
 
-
-
-Object.assign.call(main, {
+utils.assign(main, {
 	constructOptions,
 	windows,
-	// peaks,
+	peak,
 })
 
 module.exports = main

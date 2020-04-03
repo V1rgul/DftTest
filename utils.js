@@ -34,12 +34,17 @@ function memoize(fn){
 	}
 }
 
-function assignDefaults(object, defaults){
+function assign(object, defaults){
+	Object.keys(defaults).forEach(function(k){
+		object[k] = defaults[k]
+	})
+}
+assign.defaults = function assignDefaults(object, defaults){
 	Object.keys(defaults).forEach(function(k){
 		if(object[k] === undefined) object[k] = defaults[k]
 	})
 }
-function assignDefaultsGen(object, defaults){
+assign.defaultsGen = function assignDefaultsGen(object, defaults){
 	Object.keys(defaults).forEach(function(k){
 		if(object[k] === undefined) object[k] = defaults[k]()
 	})
@@ -56,6 +61,5 @@ module.exports = {
 		toRatio: dBtoRatio
 	},
 	memoize,
-	assignDefaults,
-	assignDefaultsGen,
+	assign,
 }
