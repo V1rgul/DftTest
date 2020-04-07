@@ -30,9 +30,9 @@ function correlate(data, f){
 }
 
 function calcMagnitude (d){ return Math.hypot(d[0], d[1]) }
-function calcPhase(d){ return Math.atan2(d[1], d[0]) / (Math.PI*2); }
+function calcPhase     (d){ return Math.atan2(d[1], d[0]) }
 
-// allowing to not calculate phase do not provide a significant perf increase : https://jsperf.com/dftcalcphase
+// allowing to not calculate phase does not provide a significant perf increase : https://jsperf.com/dftcalcphase
 function doDft(options, data){
 	return options.frequencies.list.map(function(f){
 		let corr = correlate(data, f)
@@ -44,19 +44,3 @@ module.exports = {
 	doWindow,
 	doDft
 }
-
-
-
-// function findMax(data){
-// 	let m = [0,-Infinity]
-// 	let id = 0
-// 	data.forEach(function(d, i){
-// 		if(d[1] > m[1]){
-// 			m = d
-// 			id = i
-// 		}
-// 	})
-// 	return id
-// }
-
-

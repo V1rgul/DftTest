@@ -19,10 +19,10 @@ function gamma(base, t){
 	return Math.pow(base, t)
 }
 
-function dBtoRatio(db){
+function dBToRatio(db){
 	return Math.pow(10, db/10)
 }
-function ratioToDB(r){
+function dBFromRatio(r){
 	return 10 * Math.log10(r)
 }
 
@@ -57,8 +57,8 @@ module.exports = {
 	logBase,
 	gamma,
 	dB: {
-		fromRatio: ratioToDB,
-		toRatio: dBtoRatio
+		fromRatio: dBFromRatio,
+		toRatio: dBToRatio
 	},
 	memoize,
 	assign,

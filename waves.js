@@ -37,9 +37,8 @@ function genCosine(freq, phase){
 }
 
 let data = genData(duration, samplingRate, [
-	// (t) => (1),
-	// (t) => utils.dB.toRatio(  0) * genCosine(  2, 0)(t),
-	(t) => utils.dB.toRatio( -2) * genCosine( 10, 0)(t),
+	(t) => utils.dB.toRatio( -2) * genCosine(  2, 0)(t),
+	(t) => utils.dB.toRatio(-10) * genCosine( 10, 0)(t),
 ])
 
 
