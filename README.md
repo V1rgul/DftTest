@@ -2,7 +2,7 @@ Dft-Easy
 ===============================================
 Discrete Fourrier Transform made easy
 
-# Example
+## Example
 ```js
 let data = [
 	[0.00,  1],
@@ -42,7 +42,7 @@ let dftResult = require("dft-easy")(data, {frequencies:{list:[0.5,1,2]}})
 execute dft
 
 ### return
-result formatted as 
+result formatted as : 
 ```js
 [
 	[frequency0, frequency0Magnitude, frequency0Phase],
@@ -52,7 +52,7 @@ result formatted as
 ```
 
 ### data
-data formatted as 
+data formatted as : 
 ```js
 [
 	[sample0Time, sample0Amplitude],
@@ -62,12 +62,23 @@ data formatted as
 ```
 
 ### options
-See constructOptions()
+See dft.constructOptions()
 
 ## dft.constructOptions(options, data)
+This is the method that calculate all the options values that aren't provided. 
+You should cache this object when calling the dft quickly or when you want the frequency list to be stable. 
+```js
+let dftOptions = dft.constructOptions({}, dataChunks[0])
+for(let i=0; i<iMax; i++){
+	dft(dataChunks[i], dftOptions)
+}
+```
+
+### return
+Constructed options object
 
 ### options.window(t)
-*default: dft.windows.Taylor()*  
+*default: `dft.windows.Taylor()`*  
 Function taking t from 0->1 and returning a multiplication factor 
 integral(window(t), 0, 1) should be equal to 1 
 you can provide your own window function or pick one from dft.windows : 
@@ -92,17 +103,17 @@ you can provide your own window function or pick one from dft.windows :
 ### options.start
 *default: minimum data[0]*  
 lowest time in data. 
-Used to calculate automatic options.duration 
+Used to calculate automatic `options.duration` 
 
 ### options.end
 *default: maximum data[0]*  
 highest time in data. 
-Used to calculate automatic options.duration 
+Used to calculate automatic `options.duration` 
 
 ### options.duration
 *default: maximum data[0] - minimum data[0]*  
 duration of data list 
-Used to calculate automatic minimum frequency 
+Used to calculate automatic `options.frequencies.min` 
 
 ### options.frequencies 
 *default: {}*  
@@ -112,23 +123,23 @@ You can provide an Array of frequencies, or options to generate one
 #### options.frequencies using generator  
 
 ##### options.frequencies.min
-*default: 1/options.duration.duration*  
+*default: `1/options.duration.duration`*  
 maximum frequency of the dft 
 
 ##### options.frequencies.max 
-*default: (1/options.timeDelta.min) / 2*  
+*default: `(1/options.timeDelta.min) / 2`*  
 minimum frequency of the dft 
 
 ##### options.frequencies.number 
-*default: 4096*  
+*default: `4096`*  
 number of equally spaced points (at log options.frequencies.logBase) 
 
 ##### options.frequencies.logBase
-*default: 10*  
+*default: `10`*  
 base of the logarithmic spacing of frequencies 
 
 ##### options.frequencies.list
-*default: <Array containining options.frequencies.number frequencies in [options.frequencies.min, options.frequencies.max] equally spaced in a logarithmic space of base options.frequencies.logBase>* 
+*default: <Array containining `options.frequencies.number` frequencies in [`options.frequencies.min`, `options.frequencies.max`] equally spaced in a logarithmic space of base `options.frequencies.logBase`>* 
 Array of frequencies where the dft will calculate the Magnitude and Phase
 
 ## dft.peak(dftResult)
