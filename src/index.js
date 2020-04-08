@@ -44,7 +44,7 @@ function constructOptions(options, data, useConstructed){
 		frequencies   : () => ({}),
 	})
 
-	if(typeof options.frequencies.list !== Array){
+	if(!Array.isArray(options.frequencies.list)){
 		utils.assign.defaultsGen(options.frequencies, {
 			min    : () => 1/dataStats().duration,
 			max    : () => (1/dataStats().timeDelta.min) / 2,
