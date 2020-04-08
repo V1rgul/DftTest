@@ -2,7 +2,7 @@ Dft-Easy
 ===============================================
 Discrete Fourrier Transform made easy
 
-## example
+# Example
 ```js
 let data = [
 	[0.00,  1],
@@ -16,7 +16,7 @@ let data = [
 ]
 ```
 ```js
-let dftResult = require("../")(data)
+let dftResult = require("dft-easy")(data)
 [
 	[frequency0, frequency0Magnitude, frequency0Phase],
 	[frequency1, frequency1Magnitude, frequency1Phase],
@@ -25,7 +25,7 @@ let dftResult = require("../")(data)
 require("gnu-plot")().plot([ {data: dftResult} ])
 ```
 ```js
-let dftResult = require("../")(data, {frequencies:{list:[0.5,1,2]}})
+let dftResult = require("dft-easy")(data, {frequencies:{list:[0.5,1,2]}})
 [
 	[ 0.5, 0.36..., 2.7... ],
 	[   1, 0.91..., 2e-16 ],
@@ -36,7 +36,7 @@ let dftResult = require("../")(data, {frequencies:{list:[0.5,1,2]}})
  - Linear scale: [demo/demo.js](demo/demo.js)  
  - Logarithmic scale: [demo/demo_dB.js](demo/demo_dB.js)  
 
-# methods
+# Methods
 
 ## dft(data, options)
 execute dft
@@ -70,9 +70,22 @@ See constructOptions()
 *default: dft.windows.Taylor()*  
 Function taking t from 0->1 and returning a multiplication factor 
 integral(window(t), 0, 1) should be equal to 1 
-you can provide your own window function or pick one from this list : 
+you can provide your own window function or pick one from dft.windows : 
 ```js
-[ Box, Triangular, Welch , Hann, Hamming, Blackman, Nuttal, BlackmanNuttal, BlackmanHarris, FlatTop , Taylor , Tukey ]
+[
+	Box(),
+	Triangular(),
+	Welch(),
+	Hann(),
+	Hamming(),
+	Blackman(),
+	Nuttal(),
+	BlackmanNuttal(),
+	BlackmanHarris(),
+	FlatTop(),
+	Taylor({interpolationSteps:256, sidelobesNumber:4, sidelobesAttenuation:35/*dB*/}),
+	Tukey({alpha:.5})
+]
 ```
 (Please note that some are configurable)
 
