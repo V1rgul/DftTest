@@ -38,8 +38,6 @@ function constructOptions(options, data, useConstructed){
 
 	utils.assign.defaultsGen(options, {
 		window        : () => windows.Taylor(),
-		start         : () => dataStats().time.min,
-		end           : () => dataStats().time.max,
 		duration      : () => dataStats().duration,
 		frequencies   : () => ({}),
 	})
