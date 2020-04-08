@@ -21,7 +21,7 @@ peaks.forEach(function (p, id){
 		"Peak #"+id,
 		"\n\tFrequency:", p[0], "Hz",
 		"\n\tMagnitude:", p[1],
-		"\n\tPhase    :", p[2], "turns",
+		"\n\tPhase    :", p[2], "rad",
 	)
 })
 

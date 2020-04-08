@@ -4,7 +4,7 @@
   "description": "Discrete Fourrier Transform made easy",
   "main": "index.js",
   "scripts": {
-    "test": "node demo.js"
+    "test": "node demo/demo.js"
   },
   "author": "V1rgul",
   "homepage": "https://github.com/V1rgul/DftTest",

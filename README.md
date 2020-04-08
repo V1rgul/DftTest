@@ -4,25 +4,37 @@ Discrete Fourrier Transform made easy
 
 ## example
 ```js
-let utils = require("./utils")
 let data = [
 	[0.00,  1],
 	[0.25,  0],
 	[0.50, -1],
 	[0.75,  0],
+	[1.00,  1],
+	[1.25,  0],
+	[1.50, -1],
+	[1.75,  0],
 ]
-let dftResult = require("dft-easy")(data)
-
-require("gnu-plot").plot([{
-	data: dftResult,
-	xlabel: "\"Frequency (Hz)\"",
-	ylabel: "\"Magnitude\"",
-	logscale:"x 10",
-}])
 ```
-For exemples using realistic data please see:  
- - Linear scale: [demo.js](demo/demo.js)  
- - Logarithmic scale: [demo_dB.js](demo/demo_dB.js)  
+```js
+let dftResult = require("../")(data)
+[
+	[frequency0, frequency0Magnitude, frequency0Phase],
+	[frequency1, frequency1Magnitude, frequency1Phase],
+	...
+]
+require("gnu-plot")().plot([ {data: dftResult} ])
+```
+```js
+let dftResult = require("../")(data, {frequencies:{list:[0.5,1,2]}})
+[
+	[ 0.5, 0.36..., 2.7... ],
+	[   1, 0.91..., 2e-16 ],
+	[   2, 0.02..., 5e-16 ]
+]
+```
+### For exemples using realistic data please see:  
+ - Linear scale: [demo/demo.js](demo/demo.js)  
+ - Logarithmic scale: [demo/demo_dB.js](demo/demo_dB.js)  
 
 # methods
 
@@ -52,7 +64,7 @@ data formatted as
 ### options
 See constructOptions()
 
-## constructOptions(options, data)
+## dft.constructOptions(options, data)
 
 ### options.window(t)
 *default: dft.windows.Taylor()*  
