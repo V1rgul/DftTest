@@ -1,12 +1,21 @@
 let gnuplot = require("gnu-plot")
-let utils = require("./utils")
-let dft = require(".")
-
-
+let utils = require("../src/utils")
 let waves = require("./waves")
-let results = dft(waves)
 
-let resultConverted = results.map((e) => [
+let dft = require("..")
+
+let data = waves({
+	duration: 10,
+	samplingRate: [50,200],
+	waves: [
+		(t) => utils.dB.toRatio(-2) * waves.cosine(  2, 0)(t),
+		(t) => utils.dB.toRatio(-5) * waves.cosine( 10, 0)(t),
+	],
+})
+
+let result = dft(data)
+
+let resultConverted = result.map((e) => [
 	e[0],
 	utils.dB.fromRatio(e[1]),
 	(e[2]+Math.PI) / (Math.PI*2), // convert to turns,  [0;1]
@@ -28,8 +37,8 @@ peaks.forEach(function (p, id){
 
 let plotF = gnuplot()
 plotF.set({
-	xlabel: "\"Hz\"",
-	ylabel: "\"dB\"",
+	xlabel: "\"Frequency (Hz)\"",
+	ylabel: "\"Magnitude (dB)\"",
 	logscale:"x 10",
 }).plot([
 	{

@@ -1,13 +1,4 @@
-let utils = require("./utils")
-
-
-let duration = 10; //s
-let samplingRate = [50,200]; //Hz
-
-
-
-
-
+let utils = require("../src/utils")
 
 
 function genSample(t, waves){
@@ -25,10 +16,6 @@ function genData(duration, freq, waves){
 }
 
 
-
-
-
-
 // phase goes from 0 to 1
 function genCosine(freq, phase){
 	return function (t) {
@@ -36,15 +23,15 @@ function genCosine(freq, phase){
 	}
 }
 
-let data = genData(duration, samplingRate, [
-	(t) => utils.dB.toRatio( -2) * genCosine(  2, 0)(t),
-	(t) => utils.dB.toRatio(-10) * genCosine( 10, 0)(t),
-])
+function main(options){
+	return genData(
+		options.duration,
+		options.samplingRate,
+		options.waves
+	)
+}
+utils.assign(main, {
+	cosine: genCosine,
+})
 
-
-
-// console.log(data)
-
-
-
-module.exports = data
+module.exports = main
