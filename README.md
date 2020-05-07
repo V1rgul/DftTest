@@ -136,7 +136,7 @@ Most of these come from [wikipedia.org/wiki/Window_function](https://en.wikipedi
 ## dft.peak(dftResult)
 Utility to find Magnitude peak in dftResult  
 ### returns
-`[frequency, magnitude]`  
+`[frequency, magnitude, phase]`  
 
 ### dftResult
 result returned from dft()  

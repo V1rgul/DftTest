@@ -75,22 +75,21 @@ function main(data, options){
 	return dftResult
 }
 
-// Can only find one peak for now
-function peaks(dftResult, options){
+function peak(dftResult, options){
 	let elemMax = [null, -Infinity]
 	dftResult.forEach(function(d){
 		if(d[1] > elemMax[1]){
 			elemMax = d
 		}
 	})
-	return [elemMax]
+	return elemMax
 }
 
 
 utils.assign(main, {
 	constructOptions,
 	windows,
-	peaks,
+	peak,
 })
 
 module.exports = main
