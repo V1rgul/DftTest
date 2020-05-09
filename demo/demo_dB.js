@@ -24,7 +24,7 @@ let resultConverted = result.map((e) => [
 // using converted results to find the peak works because:
 // - same formatting
 // - monotically increasing conversion applied to magnitude
-let peaks = dft.peaks(resultConverted)
+let peaks = [dft.peak(resultConverted)]
 
 peaks.forEach(function (p, id){
 	console.log(

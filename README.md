@@ -52,7 +52,7 @@ result formatted as :
 ```
 
 ### data
-data formatted as : 
+**Ordered** data points formatted as : 
 ```js
 [
 	[sample0Time, sample0Amplitude],
@@ -77,33 +77,30 @@ for(let i=0; i<iMax; i++){
 ### return
 Constructed options object
 
-### options.duration
-*default: maximum data[0] - minimum data[0]*  
-duration of data list 
-Used to calculate automatic `options.frequencies.min` 
-
-### options.frequencies 
+### options.frequencies  
 *default: {}*  
-There are 3 possibilities:
- - provide an Array of frequencies in `options.frequencies.list` 
- - provide `{min, max, number, logBase}` parameters to generate this list (see *default*) 
+There are 3 possibilities:  
+ - provide an Array of frequencies in `options.frequencies.list`  
+ - provide `{min, max, number, logBase}` parameters to generate this list (see *default*)  
  - provide some or none of these parameters. The rest will be infered from the data (see *default*)  
 
-#### options.frequencies.min
-*default: `1/options.duration`*  
-maximum frequency of the dft 
+#### options.frequencies.min  
+*default: `1/(data[data.length-1][0]-data[0][0])`*  
+Maximum frequency of the dft  
+Default is calculated from data duration, because you need at least one full period to detect a certain frequency  
 
 #### options.frequencies.max 
-*default: `(1/options.timeDelta.min) / 2`*  
-minimum frequency of the dft 
+*default: `(1/<minimum time Delta>) / 2`*  
+Minimum frequency of the dft  
+Default is calculated from the minimum time delta between every data point. Nyquist says that a frequency can only be correctly represented by a double sample frequency.  
 
 #### options.frequencies.number 
 *default: `4096`*  
-number of equally spaced points (at log options.frequencies.logBase) 
+Number of equally spaced points (at log options.frequencies.logBase) 
 
 #### options.frequencies.logBase
 *default: `10`*  
-base of the logarithmic spacing of frequencies 
+Base of the logarithmic spacing of frequencies 
 
 #### options.frequencies.list
 *default: <Array containining `options.frequencies.number` frequencies in [`options.frequencies.min`, `options.frequencies.max`], equally spaced in a logarithmic space of base `options.frequencies.logBase`>*  
@@ -139,4 +136,4 @@ Utility to find Magnitude peak in dftResult
 `[frequency, magnitude, phase]`  
 
 ### dftResult
-result returned from dft()  
+Result returned from dft()  

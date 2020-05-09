@@ -2,8 +2,9 @@ let utils = require("./utils")
 
 
 function doWindow(options, data){
+	let dataStart = data[0][0], dataEnd = data[data.length-1][0]
 	return data.map(function(d){
-		let normalizedT = utils.mapFrom(options.start, options.end, d[0])
+		let normalizedT = utils.mapFrom(dataStart, dataEnd, d[0])
 		return [ d[0], d[1]*options.window(normalizedT) ]
 	})
 }

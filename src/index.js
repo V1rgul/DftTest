@@ -2,50 +2,35 @@ let windows = require("./windows")
 let dft = require("./dft")
 let utils = require("./utils")
 
-function calcDataStats(data){
-	let time  = data[0][0]
-	let value = data[0][1]
 
-	let stats = {
-		value    : { min:    value, max: value },
-		time     : { min:     time, max:  time },
-		timeDelta: { min: Infinity },
-	}
-
-	let timeLast = time
+function dataFindMinimumTimeDelta(data){
+	let minTimeDelta = Infinity
+	let timeLast = data[0][0]
 	for(let i=1; i<data.length; i++){
-		time  = data[i][0]
-		if     (time < stats.time.min) stats.time.min = time
-		else if(time > stats.time.max) stats.time.max = time
-
-		value = data[i][1]
-		if     (data < stats.value.min) stats.value.min = data
-		else if(data > stats.value.max) stats.value.max = data
-
+		let time = data[i][0]
 		let dt = time - timeLast
-		if     (dt < stats.timeDelta.min) stats.timeDelta.min = dt
+		if(dt < minTimeDelta) minTimeDelta = dt
 		timeLast = time
 	}
-	stats.duration = stats.time.max - stats.time.min
-	return stats
+	return minTimeDelta
 }
 
 function constructOptions(options, data, useConstructed){
 	options = options || {}
 	if(useConstructed && options.constructed) return options
 
-	let dataStats = utils.memoize(() => calcDataStats(data))
-
 	utils.assign.defaultsGen(options, {
 		window        : () => windows.Taylor(),
-		duration      : () => dataStats().duration,
 		frequencies   : () => ({}),
 	})
 
 	if(!Array.isArray(options.frequencies.list)){
 		utils.assign.defaultsGen(options.frequencies, {
-			min    : () => 1/dataStats().duration,
-			max    : () => (1/dataStats().timeDelta.min) / 2,
+			min    : function(){
+				let duration = data[data.length-1][0] - data[0][0]
+				return 1/duration
+			},
+			max    : () => (1/dataFindMinimumTimeDelta(data)) / 2,
 			number : () => 4096,
 			logBase: () => 10,
 		})

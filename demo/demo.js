@@ -14,7 +14,8 @@ let data = waves({
 })
 
 let result = dft(data)
-let peaks = dft.peaks(result)
+
+let peaks = [dft.peak(result)]
 
 peaks.forEach(function (p, id){
 	console.log(
