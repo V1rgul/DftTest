@@ -15,17 +15,20 @@ function dataFindMinimumTimeDelta(data){
 	return minTimeDelta
 }
 
-function constructOptions(options, data, useConstructed){
-	options = options || {}
-	if(useConstructed && options.constructed) return options
+function constructOptions(data, optionsUser, useConstructed){
+	optionsUser = optionsUser || {}
+	if(useConstructed && optionsUser.constructed) return optionsUser
 
-	utils.assign.defaultsGen(options, {
-		window        : () => windows.Taylor(),
-		frequencies   : () => ({}),
+	options = {}
+	utils.assign.fillDefaultsGen(options, optionsUser, {
+		window: () => windows.Taylor(),
 	})
 
+	options.frequencies = {
+		list: (optionsUser.frequencies && optionsUser.frequencies.list) || {}
+	}
 	if(!Array.isArray(options.frequencies.list)){
-		utils.assign.defaultsGen(options.frequencies, {
+		utils.assign.fillDefaultsGen(options.frequencies, optionsUser.frequencies, {
 			min    : function(){
 				let duration = data[data.length-1][0] - data[0][0]
 				return 1/duration
@@ -52,7 +55,7 @@ function constructOptions(options, data, useConstructed){
 
 
 function main(data, options){
-	options = constructOptions(options, data, true)
+	options = constructOptions(data, options, true)
 
 	let dataWindowed = dft.doWindow(options, data)
 	let dftResult = dft.doDft(options, dataWindowed)

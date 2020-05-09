@@ -49,6 +49,14 @@ assign.defaultsGen = function assignDefaultsGen(object, defaults){
 		if(object[k] === undefined) object[k] = defaults[k]()
 	})
 }
+assign.fillDefaultsGen = function (objectDest, objectSource, defaults){
+	Object.keys(defaults).forEach(function(k){
+		if(objectSource && objectSource[k] !== undefined)
+			objectDest[k] = objectSource[k]
+		else
+			objectDest[k] = defaults[k]()
+	})
+}
 
 
 module.exports = {

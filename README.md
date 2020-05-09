@@ -62,20 +62,8 @@ result formatted as :
 ```
 
 ### options
-See dft.constructOptions()
-
-## dft.constructOptions(options, data)
-This is the method that calculate all the options values that aren't provided.  
-You should cache this object when calling the dft quickly or when you want the frequency list to be stable.  
-```js
-let dftOptions = dft.constructOptions({}, dataChunks[0])
-for(let i=0; i<iMax; i++){
-	dft(dataChunks[i], dftOptions)
-}
-```
-
-### return
-Constructed options object
+Note that the object is cloned and therefore not modified.  
+If you want to read or optimize the calculation of default options, see dft.constructOptions().  
 
 ### options.frequencies  
 *default: {}*  
@@ -129,6 +117,24 @@ You can provide your own window function, or pick one from dft.windows :
 ```
 Some have configurable parameters that are indicated with their defaults  
 Most of these come from [wikipedia.org/wiki/Window_function](https://en.wikipedia.org/wiki/Window_function#A_list_of_window_functions)  
+
+
+## dft.constructOptions(data, options)
+This is the method that fills all the options values that aren't provided with their defaults.  
+You should cache this object when calling the dft quickly or when you want the frequency list to be stable.  
+```js
+let dftOptions = dft.constructOptions(dataChunks[0])
+for(let i=0; i<iMax; i++){
+	dft(dataChunks[i], dftOptions)
+}
+```
+
+### return  
+Constructed options object  
+
+### options  
+See dft().  
+
 
 ## dft.peak(dftResult)
 Utility to find Magnitude peak in dftResult  
