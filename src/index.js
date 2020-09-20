@@ -19,7 +19,7 @@ function constructOptions(data, optionsUser, useConstructed){
 	optionsUser = optionsUser || {}
 	if(useConstructed && optionsUser.constructed) return optionsUser
 
-	options = {}
+	let options = {}
 	utils.assign.fillDefaultsGen(options, optionsUser, {
 		window: () => windows.Taylor(),
 	})
@@ -54,8 +54,8 @@ function constructOptions(data, optionsUser, useConstructed){
 }
 
 
-function main(data, options){
-	options = constructOptions(data, options, true)
+function main(data, optionsUser){
+	options = constructOptions(data, optionsUser, true)
 
 	let dataWindowed = dft.doWindow(options, data)
 	let dftResult = dft.doDft(options, dataWindowed)
