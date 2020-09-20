@@ -39,16 +39,23 @@ function assign(object, defaults){
 		object[k] = defaults[k]
 	})
 }
+
+// Assign val if undefined
 assign.defaults = function assignDefaults(object, defaults){
 	Object.keys(defaults).forEach(function(k){
 		if(object[k] === undefined) object[k] = defaults[k]
 	})
 }
+
+// Assign val() if undefined
 assign.defaultsGen = function assignDefaultsGen(object, defaults){
 	Object.keys(defaults).forEach(function(k){
 		if(object[k] === undefined) object[k] = defaults[k]()
 	})
 }
+
+// Assign objectSource.val if defined, defaults.val() otherwise
+// used to avoid modifying objectSource
 assign.fillDefaultsGen = function (objectDest, objectSource, defaults){
 	Object.keys(defaults).forEach(function(k){
 		if(objectSource && objectSource[k] !== undefined)
