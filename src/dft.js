@@ -12,7 +12,7 @@ function doWindow(options, data){
 
 function cSample(t, f){
 	c = t * Math.PI * 2 * f
-	return [ Math.cos(c), -Math.sin(c) ]
+	return [ Math.cos(c), Math.sin(c) ]
 }
 function correlate(data, f){
 	// console.log("correlate", f, data)

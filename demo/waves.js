@@ -19,7 +19,7 @@ function genData(duration, freq, waves){
 // phase goes from 0 to 1
 function genCosine(freq, phase){
 	return function (t) {
-		return Math.cos( Math.PI*2*( t*freq + phase ) )
+		return Math.cos( Math.PI*2*( t*freq - phase ) )
 	}
 }
 

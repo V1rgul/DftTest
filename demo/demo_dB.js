@@ -8,7 +8,7 @@ let data = waves({
 	duration: 10,
 	samplingRate: [50,200],
 	waves: [
-		(t) => utils.dB.toRatio(-2) * waves.cosine(  2, 0)(t),
+		(t) => utils.dB.toRatio(-2) * waves.cosine(  2, 0.2)(t),
 		(t) => utils.dB.toRatio(-5) * waves.cosine( 10, 0)(t),
 	],
 })
@@ -18,7 +18,7 @@ let result = dft(data)
 let resultConverted = result.map((e) => [
 	e[0],
 	utils.dB.fromRatio(e[1]),
-	(e[2]+Math.PI) / (Math.PI*2), // convert to turns,  [0;1]
+	(e[2]) / (Math.PI*2), // convert to turns,  [0;1]
 ])
 
 // using converted results to find the peak works because:
